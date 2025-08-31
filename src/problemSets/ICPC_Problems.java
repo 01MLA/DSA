@@ -1,6 +1,5 @@
 package problemSets;
 
-import javax.sql.RowSet;
 import java.util.*;
 
 /**
@@ -651,52 +650,83 @@ public class ICPC_Problems {
         return found;
     }
 
-    /** 83. Remove duplicates from sorted list
+    /**
+     * 83. Remove duplicates from sorted list
      * Given the head of a sorted linked list, delete all duplicates such that each element appears only once.
      * Return the linked list sorted as well.
      *
-     * */
-    ListNode deleteDuplicates(ListNode head){
+     *
+     */
+    ListNode removeDuplicates(ListNode head) {
         ListNode curr = head;
-
+        while (curr != null && curr.next != null) {
+            if (curr.val == curr.next.val) curr.next = curr.next.next;
+            else curr = curr.next;
+        }
+        return head;
     }
+
+    /**
+     * 88. Merge sorted arrays
+     * You are given two integer arrays nums1, nums2, sorted in non-decreasing order, and two integers m and n,
+     * representing the number of elements in nums1 and nums2 respectively.
+     * Merge nums1 and nums2 into a single array sorted in non-decreasing order. the result is in nums1 (with m+n cap..)
+     * input: int[] nums1 = {1, 2, 3, 0, 0, 0},  int[] nums2 = {2, 5, 6}, m=3, n=3
+     * output: nums1 = {1, 2, 2, 3, 5, 6}
+     */
+    void mergeArrays(int[] nums1, int m, int[] nums2, int n) {
+        int pointer = nums1.length - 1, mIn = m - 1, nIn = n - 1;
+        while (pointer >= 0) {
+            int element1 = (mIn >= 0) ? nums1[mIn] : Integer.MIN_VALUE;
+            int element2 = (nIn >= 0) ? nums2[nIn] : Integer.MIN_VALUE;
+            if (element2 > element1) {
+                nums1[pointer] = element2;
+                pointer--;
+                nIn--;
+            } else {
+                nums1[pointer] = element1;
+                pointer--;
+                mIn--;
+            }
+        }
+    }
+
+    /**
+     * 91. Decode Ways
+     * You have intercepted a secret message encoded as a string of numbers. The message is decoded via the following
+     * mapping: "1" -> 'A', "2" -> 'B' ... "25" -> 'Y', "26" -> 'Z'
+     * However, while decoding the message, you realize that there are many different ways you can decode the message
+     * because some codes are contained in other codes ("2" and "5" vs "25").
+     * For example, "11106" can be decoded into:
+     * <p>
+     * "AAJF" with the grouping (1, 1, 10, 6)
+     * "KJF" with the grouping (11, 10, 6)
+     * The grouping (1, 11, 06) is invalid because "06" is not a valid code (only "6" is valid).
+     * Note: there may be strings that are impossible to decode.
+     * <p>
+     * Given a string s containing only digits, return the number of ways to decode it. If the entire string cannot be
+     * decoded in any valid way, return 0. The test cases are generated so that the answer fits in a 32-bit integer.
+     * <p>
+     * Example 1: Input: s = "12" Output: 2
+     * Explanation: "12" could be decoded as "AB" (1 2) or "L" (12).
+     * <p>
+     * Example 2: Input: s = "226", Output: 3
+     * Explanation: "226" could be decoded as "BZ" (2 26), "VF" (22 6), or "BBF" (2 2 6).
+     * <p>
+     * Example 3: Input: s = "06", Output: 0
+     * Explanation: "06" cannot be mapped to "F" because of the leading zero ("6" is different from "06"). In this case, the string is not a valid encoding, so return 0.
+     */
+    public int numDecodings(String s) {
+        return 0;
+    }
+
 
     public static void main(String[] args) {
         ICPC_Problems icpc = new ICPC_Problems();
-        int[] nums = {2, 7, 11, 15};
-        int target = 9;
-        icpc.twoSum(nums, target);
-
-
-        int[][] myInput = {{0, 1, 2, 0}, {3, 4, 5, 2}, {1, 3, 1, 5}, {1, 0, 1, 5}};
-        for (int[] arr : myInput) {
-            for (int num : arr) {
-                System.out.print(num + " ");
-            }
-            System.out.println();
-        }
-        icpc.setZeroes(myInput);
-        for (int[] arr : myInput) {
-            for (int num : arr) {
-                System.out.print(num + " ");
-            }
-            System.out.println();
-        }
-
-        System.out.println("--------------------");
-        int[] colors = {1, 2, 0, 1, 2, 0, 0, 1};
-        for (int num : colors) {
-            System.out.print(num + " ");
-        }
-        System.out.println();
-        icpc.sortColors(colors);
-        for (int num : colors) {
-            System.out.print(num + " ");
-        }
-
-        char[][] input = {{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}};
-        String word = "ABCCED";
-        boolean a = icpc.exist(input, word);
-        System.out.println(a);
+        int[] nums1 = {1, 2, 3, 0, 0, 0};
+        int[] nums2 = {2, 5, 6};
+        icpc.mergeArrays(nums1, 3, nums2, 3);
+        System.out.println(Arrays.toString(nums1));
     }
+
 }
