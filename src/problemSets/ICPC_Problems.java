@@ -310,15 +310,8 @@ public class ICPC_Problems {
         return n + 1;
     }
 
-//    public static int firstMissedPositive(int[] nums) {
-//        int len = nums.length;
-//        for (int i = 0; i < nums.length; i++) {
-//            while(nums[i]<len)
-//        }
-//    }
-    // 42. Traping rain water
-
     /**
+     * 42. Traping rain water
      * Given n non-negative integers representing an elevation map where the
      * width of each bar is 1, compute how much water it can trap after rain.
      * input: [0,1,0,2,1,0,1,3,2,1,2,1] output: 6 The above elevation map(black
@@ -377,11 +370,12 @@ public class ICPC_Problems {
         }
     }
 
-    /*49. Group anagrams 
-    Given an array of strings strs, group the anagrams together. you can return 
-    the answer in any order.
-    input: strs: {"eat","tea","ate","nat","bat"}
-    output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+    /**
+     * 49. Group anagrams
+     * Given an array of strings strs, group the anagrams together. you can return
+     * the answer in any order.
+     * input: strs: {"eat","tea","ate","nat","bat"}
+     * output: [["bat"],["nat","tan"],["ate","eat","tea"]]
      */
     List<List<String>> groupAnagrams(String[] strs) {
         List<List<String>> result = new ArrayList<>();
@@ -399,11 +393,12 @@ public class ICPC_Problems {
         return result;
     }
 
-    /*53. Max subarray 
-    Given an integer array nums, find the subarray with the largest sum,
-    and return its sum.
-    input: [-1,1,-3,4,-1,2,1,-5,4]
-    output: 6
+    /**
+     * 53. Max subarray
+     * Given an integer array nums, find the subarray with the largest sum,
+     * and return its sum.
+     * input: [-1,1,-3,4,-1,2,1,-5,4]
+     * output: 6
      */
     int maxSubArray(int[] nums) {
         int sum = 0;
@@ -418,15 +413,16 @@ public class ICPC_Problems {
         return max;
     }
 
-    /*55. Jump Game
-    You are given an intege array nums. you are initailly in positioned at the
-    array's first index, and each element in the array represents your maximum 
-    jump legth at that position. 
-    return true if you can reach that last index or false otherwise.
-    input: [2,3,1,1,4] out: true, exp: jump 1 step from index 0 to 1, then 3 steps
-    to the last index.
-    inut: [3,2,1,0,4] out: false, exp: you will allways arrive at index 3 no, matter what. its 
-    max jump length is 0, which makes impossible to reach last.
+    /**
+     * 55. Jump Game
+     * You are given an intege array nums. you are initailly in positioned at the
+     * array's first index, and each element in the array represents your maximum
+     * jump legth at that position.
+     * return true if you can reach that last index or false otherwise.
+     * input: [2,3,1,1,4] out: true, exp: jump 1 step from index 0 to 1, then 3 steps
+     * to the last index.
+     * inut: [3,2,1,0,4] out: false, exp: you will allways arrive at index 3 no, matter what. its
+     * max jump length is 0, which makes impossible to reach last.
      */
     boolean jumpGame(int[] nums) {
         if (nums.length == 1) {
@@ -487,11 +483,13 @@ public class ICPC_Problems {
         return merged.toArray(int[][]::new);
     }
 
-    /* 58. Length of last word
-    Given a string s consisting of some words separated by some number of spaces , return the len of last word.
-    A word is a maximum substring consisting of non-space characters only.
-    input: "Hello world", output: 5
-    * */
+    /**
+     * 58. Length of last word
+     * Given a string s consisting of some words separated by some number of spaces , return the len of last word.
+     * A word is a maximum substring consisting of non-space characters only.
+     * input: "Hello world", output: 5
+     *
+     */
     int lengthOfLastWord(String s) {
         s = s.trim(); // remove trailing spaces
         int lastSpace = s.lastIndexOf(' ');
@@ -507,10 +505,12 @@ public class ICPC_Problems {
         return strs[strs.length - 1].length();
     }
 
-    /* 70. Climbing stairs
+    /**
+     * 70. Climbing stairs
      * You are climbing a staircase. it takes n steps to reach the top.
      * Each time you can either climb 1 or 2 step. in how many distinct ways you can climb to the top.
-     * */
+     *
+     */
     int climbStairs(int n) {
         if (n == 0 || n == 1) return 1;
         int one = 1;
@@ -536,21 +536,22 @@ public class ICPC_Problems {
     }
 
 
-    /* 73. Set matrix zeroes (inplace)
-    Given an m*n integer matrix, if an element is 0, set its entire row and column to 0's.
-    input:
-        [
-         [1,1,1],
-         [1,0,1],
-         [1,1,1],
-        }
-    output:
-        [
-         [1,0,1],
-         [0,0,0],
-         [1,0,1],
-        }
-   */
+    /**
+     * 73. Set matrix zeroes (inplace)
+     * Given an m*n integer matrix, if an element is 0, set its entire row and column to 0's.
+     * input:
+     * [
+     * [1,1,1],
+     * [1,0,1],
+     * [1,1,1],
+     * }
+     * output:
+     * [
+     * [1,0,1],
+     * [0,0,0],
+     * [1,0,1],
+     * }
+     */
     void setZeroes(int[][] matrix) {
         int rows = matrix.length;
         int cols = matrix[0].length;
@@ -611,33 +612,54 @@ public class ICPC_Problems {
      *
      * */
     String minWindow(String s, String t) {
-        String resultString = "";
-        if (t.length() > s.length()) return resultString;
-        int[] tCount = new int[128];
-        for (char c : t.toCharArray()) {
-            tCount[c]++;
-        }
-        char[] sChars = s.toCharArray();
-        int left = 0, right = 0;
-        int found = 0, toFind = t.length();
-        int minWindowLength = Integer.MAX_VALUE;
-        while (right < s.length()) {
-            char ch = sChars[right];
-            tCount[ch]--;
-            if (tCount[ch] >= 0) {
-                found++;
-            }
-            while (found == toFind) {
-                if (minWindowLength > (right - left + 1)) {
-                    minWindowLength = right - left + 1;
-                    resultString = s.substring(left, right + 1);
-                }
-                tCount[sChars[left]]++;
-                if
-            }
-        }
+        return "";
     }
 
+    /**
+     * 79.Word Search
+     * Given an m * n grid of char board and a string word, return true if the word exist in the grid.
+     * The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or
+     * vertically neighboring. The same letter cell may not be used more than once.
+     * input:{
+     * {A,B,C,E},
+     * {S,F,C,S},
+     * {A,D,E,E}
+     * }, word: "ABCCED"    ,       output: true
+     */
+    boolean exist(char[][] board, String word) {
+        int rows = board.length;
+        int cols = board[0].length;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (board[i][j] == word.charAt(0) && helper(board, word, i, j, 0)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    boolean helper(char[][] board, String word, int i, int j, int count) {
+        if (count == word.length()) return true;
+        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length || board[i][j] == word.charAt(count))
+            return false;
+
+        char temp = board[i][j];
+        board[i][j] = ' ';
+        boolean found = helper(board, word, i + 1, j, count + 1) || helper(board, word, i - 1, j, count + 1) || helper(board, word, i, j + 1, count + 1) || helper(board, word, i, j - 1, count + 1);
+        board[i][j] = temp;
+        return found;
+    }
+
+    /** 83. Remove duplicates from sorted list
+     * Given the head of a sorted linked list, delete all duplicates such that each element appears only once.
+     * Return the linked list sorted as well.
+     *
+     * */
+    ListNode deleteDuplicates(ListNode head){
+        ListNode curr = head;
+
+    }
 
     public static void main(String[] args) {
         ICPC_Problems icpc = new ICPC_Problems();
@@ -672,5 +694,9 @@ public class ICPC_Problems {
             System.out.print(num + " ");
         }
 
+        char[][] input = {{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}};
+        String word = "ABCCED";
+        boolean a = icpc.exist(input, word);
+        System.out.println(a);
     }
 }
