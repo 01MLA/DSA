@@ -1397,7 +1397,6 @@ public class LeetCodeProblems {
 
     /**
      * 201. Bitwise AND of numbers range
-     *
      */
     int rangeBitwiseAnd(int left, int right) {
         int shifts = 0;
@@ -1629,46 +1628,177 @@ public class LeetCodeProblems {
         return squareMemo[n] = min;
     }
 
+
     /**
-     * 232. Implement queue using stacks
+     * 283. Move Zeroes
+     * <p>
+     * Move zeroes to end of array , no more space used.
+     * </p>
      */
-    static class MyQueue {
-
-        Stack<Integer> stack1 = new Stack<>();
-        Stack<Integer> tempStack = new Stack<>();
-
-        MyQueue() {
-        }
-
-        void push(int value) {
-            while (!stack1.isEmpty()) {
-                tempStack.push(stack1.pop());
-            }
-            stack1.push(value);
-            while (!tempStack.isEmpty()) {
-                stack1.push(tempStack.pop());
+    void moveZeroes(int[] nums) {
+        int n = nums.length;
+        int index = 0;
+        for (int i = 0; i < n; i++) {
+            if (nums[i] != 0) {
+                nums[index] = nums[i];
+                index++;
             }
         }
-
-        int pop() {
-            return (!stack1.isEmpty()) ? stack1.pop() : -1;
+        for (int i = index; i < n; i++) {
+            nums[i] = 0;
         }
-
-        int peek() {
-            return (!stack1.isEmpty()) ? stack1.peek() : -1;
-        }
-
-        boolean isEmpty() {
-            return stack1.isEmpty();
-        }
-
     }
+
+    /**
+     * 290. Word pattern
+     * <p>
+     * check if s follows the pattern (full match). Here fallow means,that there is a bijection between a letter in
+     * pattern and a non-empty word in s.
+     * </p>
+     */
+    boolean wordPattern(String pattern, String s) {
+        Map<Character, String> char_map = new HashMap<>();
+        Map<String, Character> word_map = new HashMap<>();
+        String[] words = s.split(" ");
+        if (pattern.length() != words.length) return false;
+
+        for (int i = 0; i < words.length; i++) {
+            char c = pattern.charAt(i);
+            String word = words[i];
+            if (!char_map.containsKey(c)) {
+                if (word_map.containsKey(word)) return false;
+                else {
+                    char_map.put(c, word);
+                    word_map.put(word, c);
+                }
+            } else {
+                String mappedWord = char_map.get(c);
+                if (!mappedWord.equals(word)) return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 130. longest increasing subsequence
+     * <p>
+     * return the len of longest strictly increasing subsequence
+     * </p>
+     * input: nums:{10,9,2,5,,3,7,101,18}, output:4 {2,3,7,101}
+     */
+    int lenOfLIS(int[] nums) {
+        return -1;
+    }
+
+    /**
+     * helper fun to print linked lists
+     */
+    void printList(ListNode head) {
+        ListNode curr = head;
+        while (curr != null) {
+            System.out.print(curr.val + " ");
+            if (curr.next != null) {
+                System.out.print(" ~> ");
+            }
+            curr = curr.next;
+        }
+        System.out.println();
+    }
+
+    /**
+     * 328. odd even linked list
+     * <p>
+     * group all the nodes with odd indices followed the nodes with even indices , and return the reordered list.
+     * </p>
+     */
+    ListNode oddEvenList(ListNode head) {
+        if (head == null || head.next == null || head.next.next == null) return head;
+        ListNode odd = head; // list of odds
+        ListNode even = head.next; // list of evens
+        ListNode evenStart = even; // pointer to remember start of evens
+        while (odd.next != null && even.next != null) {
+            odd.next = even.next; // point to other odd: add-even-odd
+            odd = even.next; // move further
+            even.next = odd.next; // point to other even: even-odd-even
+            even = odd.next; // move further
+        }
+        odd.next = evenStart; // connect end of adds to evens
+        return head;
+    }
+
+    /**
+     * 334. increasing triplet subsequence
+     * <p>
+     * check if in the array exists a triple of indices (i,j,k) such that i<j<k and nums[i] < nums[j] < nums[k]
+     * </p> todo: use it a cheat sheet (a good example way)
+     */
+    boolean increasingTriplet(int[] nums) {
+        int first = Integer.MAX_VALUE;
+        int second = Integer.MAX_VALUE;
+        for (int num : nums) {
+            if (num <= first) first = num;
+            else if (num <= second) second = num;
+            else return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * 338. Counting Bits
+     * <p>
+     * Given an int n,return an array ans of len n+1, such that for each i (0 <= i <= n) is the number of 1's in the
+     * binary representation of i.
+     * </p>
+     * e.g. n = 2   output: [0,1,1]
+     * exp: 0 --> 0, 1 --> 1, 2 --> 10
+     */
+    int[] countBits(int n) {
+        return new int[]{};
+    }
+
 }
 
 class Main {
+
     public static void main(String[] args) {
         LeetCodeProblems lc = new LeetCodeProblems();
-        int[] array = {2, 3, 1, 3, 4, 3};
-        System.out.println(lc.containsDuplicate(array));
+        int[] nums = {1, 2, 3, 4, 5};
+        System.out.println(lc.increasingTriplet(nums));
     }
+}
+
+/**
+ * 232. Implement queue using stacks
+ */
+class MyQueue {
+
+    Stack<Integer> stack1 = new Stack<>();
+    Stack<Integer> tempStack = new Stack<>();
+
+    MyQueue() {
+    }
+
+    void push(int value) {
+        while (!stack1.isEmpty()) {
+            tempStack.push(stack1.pop());
+        }
+        stack1.push(value);
+        while (!tempStack.isEmpty()) {
+            stack1.push(tempStack.pop());
+        }
+    }
+
+    int pop() {
+        return (!stack1.isEmpty()) ? stack1.pop() : -1;
+    }
+
+    int peek() {
+        return (!stack1.isEmpty()) ? stack1.peek() : -1;
+    }
+
+    boolean isEmpty() {
+        return stack1.isEmpty();
+    }
+
 }
