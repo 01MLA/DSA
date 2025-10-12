@@ -46,7 +46,6 @@ class ListNode {
  */
 public class LeetCodeProblems {
 
-
     /**
      * 48. Rotate Image
      * You are given an n*n 2D matrix representing an image, roate the image by 90
@@ -85,7 +84,7 @@ public class LeetCodeProblems {
 
     /**
      * Problem: 1. Two Sum
-     * LeetCode Link: https://leetcode.com/problems/two-sum/
+     * LeetCode Link: <a href="https://leetcode.com/problems/two-sum/">...</a>
      * <p>
      * Given an array of integers `nums` and an integer `target`, return **indices of the two numbers** such that they add up to `target`.
      * <p>
@@ -1753,8 +1752,464 @@ public class LeetCodeProblems {
      * e.g. n = 2   output: [0,1,1]
      * exp: 0 --> 0, 1 --> 1, 2 --> 10
      */
-    int[] countBits(int n) {
-        return new int[]{};
+    public int[] countBits(int n) {
+        int[] ans = new int[n + 1];
+        ans[0] = 0;
+        for (int i = 1; i <= n; i++) {
+            String binary = Integer.toBinaryString(i);
+            System.out.println(binary);
+            ans[i] = countOnes(binary);
+        }
+        return ans;
+    }
+
+    private int countOnes(String num) {
+        int count = 0;
+        for (int i = 0; i < num.length(); i++) {
+            if (num.charAt(i) == '1') {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    //    Optimized Code
+    int[] countBits2(int n) {
+        int[] ans = new int[n + 1];
+        ans[0] = 0;
+        for (int i = 1; i <= n; i++) {
+            ans[i] = ans[i >> 1] + (i & 1); // it computes the previous computed bits (as a precomputed num) plus end bit.
+        }
+        return ans;
+    }
+
+    // solution 3
+    static class Solution {
+        static {
+            Solution sol = new Solution();
+            for (int i = 0; i < 500; i++) sol.countBits(0);  // JIT warmup
+        }
+
+        public int[] countBits(int n) {
+            int[] res = new int[n + 1];
+            res[0] = 0;
+            if (n == 0) {
+                return res;
+            }
+            for (int i = 1; i <= n; i++) {
+                if (i % 2 == 1) {
+                    res[i] = res[i / 2] + 1;
+                } else {
+                    res[i] = res[i / 2];
+                }
+            }
+            return res;
+        }
+    }
+
+    /**
+     * 344. Reverse String
+     */
+    void reverseString(char[] s) {
+        int start = 0;
+        int end = s.length - 1;
+        while (start < end) {
+            char temp = s[end];
+            s[end] = s[start];
+            s[start] = temp;
+            start++;
+            end--;
+        }
+    }
+
+    /**
+     * 345. Reverse String - reverse vowels
+     */
+    String reverseStringVowels(String s) {
+        int start = 0;
+        int end = s.length() - 1;
+        char[] chars = s.toCharArray();
+        String vowels = "AEIOUaeiou";
+        while (start < end) {
+            while (start < end && vowels.indexOf(chars[start]) == -1) start++;
+            while (end > start && vowels.indexOf(chars[end]) == -1) end--;
+
+            char temp = chars[end];
+            chars[end] = chars[start];
+            chars[start] = temp;
+            start++;
+            end--;
+        }
+        return String.valueOf(chars);
+    }
+
+    /**
+     * 347. top k frequent elements
+     */
+    int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        List<Integer> list = new ArrayList<>(map.keySet());
+        list.sort((a, b) -> map.get(b) - map.get(a));
+        int[] result = new int[k];
+        int index = 0;
+        for (int i = 0; i < k; i++) {
+            if (i < map.size()) {
+                result[index] = list.get(i); // if there was asked k top numbers, but there wasn't k type number.
+            } else result[index] = -1;
+            index++;
+        }
+        return result;
+    }
+
+    /**
+     * 349. Intersection of two arrays
+     */
+    int[] intersection(int[] nums1, int[] nums2) {
+        Map<Integer, Integer> map = new HashMap<>();
+        List<Integer> result = new ArrayList<>();
+        for (int num : nums1) map.put(num, 1);
+        for (int num : nums2) {
+            if (map.containsKey(num) && map.get(num) == 1) {
+                result.add(num);
+                map.put(num, 0); // to avoid repeats
+            }
+        }
+        int[] answers = new int[result.size()];
+        for (int i = 0; i < result.size(); i++) {
+            answers[i] = result.get(i);
+        }
+        return answers;
+    }
+
+    /**
+     * 368. Largest Divisible subset
+     */
+    List<Integer> result;
+    int[] subsetSizeMemo;
+
+    List<Integer> largestDivisibleSubset(int[] nums) {
+        Arrays.sort(nums);
+        result = new ArrayList<>();
+        subsetSizeMemo = new int[nums.length];
+        Arrays.fill(subsetSizeMemo, -1);
+        l_helper(nums, 0, new ArrayList<>(), 1);
+        return result;
+    }
+
+    private void l_helper(int[] nums, int index, ArrayList<Integer> currList, int prev) {
+        if (currList.size() > result.size()) {
+            result = new ArrayList<>(currList);
+        }
+        for (int i = index; i < nums.length; i++) {
+            if (currList.size() > subsetSizeMemo[i] && nums[i] % prev == 0) {
+                subsetSizeMemo[i] = currList.size();
+                currList.add(nums[i]);
+                l_helper(nums, i + 1, currList, nums[i]);
+                currList.removeLast();
+            }
+        }
+    }
+
+
+    /**
+     * 374. guess number higher or lower
+     */
+
+    int guessNumber(int n) {
+        return -1;
+    }
+
+    int guess() {
+        return -1;
+    }
+
+    /**
+     * Insert delete getRandom O(1)
+     */
+    class RandomizedSet {
+        List<Integer> list;
+        HashMap<Integer, Integer> map;
+        Random random = new Random();
+
+        public RandomizedSet() {
+            this.list = new ArrayList<>();
+            this.map = new HashMap<>();
+        }
+
+        public boolean insert(int value) {
+            if (map.containsKey(value)) return false;
+            map.put(value, list.size());
+            list.add(value);
+            return true;
+        }
+
+        public boolean remove(int value) {
+            if (!map.containsKey(value)) return false;
+            int pos = map.get(value);
+            if (pos != (list.size() - 1)) {
+                int lastElement = list.getLast();
+                list.set(pos, lastElement);
+                map.put(lastElement, pos);
+            }
+            map.remove(value);
+            list.removeLast();
+            return true;
+        }
+
+        public int getRandom() {
+            int randomInt = random.nextInt(list.size());
+            return list.get(randomInt);
+        }
+    }
+
+    /**
+     * 383. Ransom note
+     * Given two strings ransom Note and other magazine, check if the note is constructable out of magazine.
+     */
+    boolean canConstruct(String ransomNote, String magazine) {
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < magazine.length(); i++) {
+            map.put(magazine.charAt(i), map.getOrDefault(magazine.charAt(i), 0) + 1);
+        }
+        int count = 0;
+        for (int i = 0; i < ransomNote.length(); i++) {
+            char c = ransomNote.charAt(i);
+            if (map.containsKey(c) && map.get(c) > 0) {
+                count++;
+                map.put(c, map.get(c) - 1);
+            } else break;
+        }
+        return count == ransomNote.length();
+    }
+
+    // other solution - optimized
+    public boolean canConstruct2(String ransomNote, String magazine) {
+        int from[] = new int[26];
+        for (char ch : magazine.toCharArray()) {
+            from[ch - 'a']++;
+        }
+
+        int to[] = new int[26];
+        int index = 0;
+        for (char ch : ransomNote.toCharArray()) {
+            index = ch - 'a';
+            to[index]++;
+
+            if (to[index] > from[index]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 387. first unique character in a string
+     */
+    int firstUniqueChar(String s) {
+        int[] arr = new int[26];
+        for (char c : s.toCharArray()) {
+            arr[c - 'a']++;
+        }
+        for (int i = 0; i < s.length(); i++) {
+            if (arr[s.charAt(i)] == 1) return i;
+        }
+        return -1;
+    }
+
+    /**
+     * 389. find the difference
+     */
+    char findTheDifference(String s, String t) {
+        int t_sum = 0;
+        int s_sum = 0;
+        for (char c : s.toCharArray())
+            s_sum += c;
+        for (char c : t.toCharArray())
+            t_sum += c;
+        return (char) (t_sum - s_sum);
+    }
+
+    /**
+     * 392. is subsequence
+     */
+    boolean isSubSequence(String s, String t) {
+        if (s == null || s.isEmpty()) return true;
+        int index = 0;
+        for (int i = 0; i < t.length(); i++) {
+            if (s.charAt(index) == t.charAt(i)) index++;
+            if (index == s.length()) return true;
+        }
+        return false;
+    }
+
+    // more optimized solution
+    public boolean isSubsequence(String s, String t) {
+        int prev = -1;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            int idx = t.indexOf(c, prev + 1);
+            if (idx == -1) {
+                return false;
+
+            }
+            prev = idx;
+
+        }
+        return true;
+    }
+
+    /**
+     * 402. Remove k digits. num is non-negative int
+     * <p>
+     * return the smallest possible integer after removing k digits from num.
+     * <p>
+     * e.g. num="1432219", k=3, output="1219"
+     * e.g. num="10200", k=1, output="200"
+     * e.g. num="10", k=2, output="0"
+     * </p>
+     * </p>
+     */
+    String removeKDigits(String num, int k) {
+        Stack<Character> stack = new Stack<>();
+        for (char ch : num.toCharArray()) {
+            while (!stack.isEmpty() && k > 0 && stack.peek() > ch) {
+                stack.pop();
+                k--;
+            }
+            stack.push(ch);
+        }
+        while (!stack.isEmpty() && k > 0) { // some times while all chars are passed, but not k digits deleted.
+            stack.pop();
+            k--;
+        }
+        StringBuilder sb = new StringBuilder();
+        while (!stack.isEmpty()) {
+            sb.append(stack.pop());
+        }
+        sb.reverse();
+        while (sb.length() > 1 && sb.charAt(0) == 0) sb.deleteCharAt(0);
+        return (!sb.isEmpty()) ? sb.toString() : "0";
+    }
+
+    /**
+     * 442. Find all duplicates in an array
+     */
+    List<Integer> findDuplicates(int[] arr) {
+        List<Integer> result = new ArrayList<>();
+        for (int c : arr) {
+            arr[Math.abs(c) - 1] *= -1;
+        }
+        for (int c : arr) {
+            if (arr[Math.abs(c) - 1] > 0) {
+                result.add(Math.abs(c));
+                arr[Math.abs(c) - 1] *= -1;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 443. String comparison
+     */
+    int compress(char[] chars) {
+        int index = 0;
+        int start = 0;
+        while (start < chars.length) {
+            int end = start;
+            while (end < chars.length && chars[start] == chars[end]) {
+                end++;
+            }
+            int count = end - start; // len of reputation
+            chars[index++] = chars[start];
+            if (count >= 2) {
+                char[] freq = Integer.toString(count).toCharArray();
+                for (char c : freq) {
+                    chars[index++] = c;
+                }
+            }
+            start = end;
+        }
+        return index;
+    }
+
+    /**
+     * 455. Assign cookies - not understood weel
+     */
+    int findContentChildren(int[] g, int[] s) {
+        Arrays.sort(g);
+        Arrays.sort(s);
+        int children = 0;
+        int cookie = 0;
+        while (cookie < s.length && children < g.length) {
+            if (s[cookie] >= g[children]) {
+                children++;
+            }
+            cookie++;
+        }
+        return children;
+    }
+
+    /**
+     * 485. max consecutive ones
+     *
+     */
+    int findMaxConsecutiveOnes(int[] nums) {
+        int max = 0;
+        int count = 0;
+        for (int num : nums) {
+            if (num == 1) {
+                count++;
+                max = Math.max(max, count);
+            } else count = 0;
+        }
+        return max;
+    }
+
+    /**
+     * 520. Detect capital
+     * <p>
+     * check if capital these rules are noticed in the string.
+     * 1. all lower case
+     * 2. title case: Title
+     * 3. all upper case
+     * </p>
+     *
+     */
+    boolean detectCapitalUse(String word) {
+        return allLower(word) || allCaps(word) || titleCase(word);
+    }
+
+    // helper
+    private boolean allCaps(String s) {
+        for (char c : s.toCharArray()) {
+            if (!Character.isUpperCase(c)) return false;
+        }
+        return true;
+    }
+
+    // helper
+    private boolean allLower(String s) {
+        for (char c : s.toCharArray()) {
+            if (!Character.isLowerCase(c)) return false;
+        }
+        return true;
+    }
+
+    // helper
+    private boolean titleCase(String s) {
+        return Character.isUpperCase(s.charAt(0)) && allLower(s.substring(1));
+    }
+
+
+    /**
+     * 446. Arithmetic Slices II - Subsequence
+     *
+     */
+    int numberOfArithmeticSlices(int[] nums) {
+        return -1;
     }
 
 }
@@ -1763,8 +2218,8 @@ class Main {
 
     public static void main(String[] args) {
         LeetCodeProblems lc = new LeetCodeProblems();
-        int[] nums = {1, 2, 3, 4, 5};
-        System.out.println(lc.increasingTriplet(nums));
+        System.out.println(lc.detectCapitalUse("TiTLE"));
+
     }
 }
 

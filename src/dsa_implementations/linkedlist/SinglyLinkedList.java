@@ -6,14 +6,9 @@ public class SinglyLinkedList {
     public int size;
 
     public void createSLList(int value) {
-        head = new ListNode();
-//
-        ListNode node = new ListNode();
-        node.value = value;
-//
+        ListNode node = new ListNode(value);
         head = node;
         tail = node;
-//
         size = 1;
     }
 
@@ -108,17 +103,5 @@ public class SinglyLinkedList {
         size = 0;
     }
 
-
 }
 
-class ListNode {
-    int value;
-    ListNode next = null;
-
-    public ListNode(int value) {
-        this.value = value;
-    }
-
-    public ListNode() {
-    }
-}
